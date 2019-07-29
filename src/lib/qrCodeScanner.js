@@ -1,4 +1,6 @@
-export async function initCamera(videoSelector = 'video') {
+import JsQR from 'jsqr'
+
+export async function init(videoSelector = 'video') {
   const mediaConstraints = {
     video: {
       facingMode: 'environment', // Front camera

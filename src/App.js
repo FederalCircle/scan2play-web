@@ -25,6 +25,9 @@ const Styled = {}
 
 Styled.Wrapper = styled(Grid)`
   background-color: ${colors.codGray};
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 2px 6px 3px rgba(0,0,0,.5);
 `
 
 function App() {

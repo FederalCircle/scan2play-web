@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-// import JsQR from 'jsqr'
 // MUI
 import Grid from '@material-ui/core/Grid'
 // Others
 import * as colors from '../constants/colors'
-import * as userMedia from '../lib/userMedia'
+import * as qrCodeScanner from '../lib/qrCodeScanner'
 // Assets
 import overlayPath from '../assets/overlay.svg'
 
@@ -16,17 +15,22 @@ Styled.VideoContainer = styled(Grid)`
 `
 Styled.Overlay = styled.img`
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  /* background-color: ${colors.codGray};
-  opacity: .2; */
+  width: 100%;
+  height: 100%;
+`
+
+Styled.Overlay = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(/static/media/overlay.8ce51b10.svg);
+  background-position: center;
+  background-size: cover;
 `
 
 const Scan = () => {
   React.useEffect(() => {
-    userMedia.initCamera('#video')
+    qrCodeScanner.init('#video')
   }, [])
   return (
     <Styled.VideoContainer container justify="center">
