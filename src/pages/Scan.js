@@ -35,6 +35,7 @@ const Scan = () => {
   return (
     <Styled.VideoContainer container justify="center">
       <video id="video" autoPlay playsInline />
+      <canvas id="qrCanvas" hidden />
       <Styled.Overlay src={overlayPath} />
     </Styled.VideoContainer>
   )
