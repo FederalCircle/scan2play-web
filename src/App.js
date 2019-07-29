@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import styled from 'styled-components'
+import { BrowserRouter as Router, Switch,  Route } from 'react-router-dom'
+// MUI
+import { ThemeProvider } from '@material-ui/styles'
+import { createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Grid from '@material-ui/core/Grid'
+// Custom components
+import Scan from './pages/Scan'
+import Home from './pages/Home'
+// Constants
+import * as colors from './constants/colors'
+
+// MUI Theme
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: colors.white },
+    secondary: { main: colors.codGray },
+  }
+})
+
+// Styles
+const Styled = {}
+
+Styled.Wrapper = styled(Grid)`
+  background-color: ${colors.codGray};
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Styled.Wrapper container>
+          <Switch>
+            <Route path="/scan" component={Scan} />
+            <Route path="/" component={Home} />
+          </Switch>
+        </Styled.Wrapper>
+      </ThemeProvider>
+    </Router>
+  )
 }
 
-export default App;
+export default App
