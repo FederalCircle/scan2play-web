@@ -12,7 +12,7 @@ import * as colors from '../constants/colors'
 
 const Styled = {}
 
-Styled.Wrapper = styled(Grid)`
+Styled.GridWrapper = styled(Grid)`
   margin: 8px;
 `
 
@@ -34,28 +34,23 @@ Styled.Start = styled(Typography)`
   }
 `
 
-const Home = ({ history }) => {
-  const handleClick = () => {
-    history.push('/scan')
-  }
-  return (
-    <Styled.Wrapper
-      container 
-      direction="column"
-      justify="center"
-      alignItems="center"
-      onClick={handleClick}
-    >
-      <Grid item>
-        <Styled.Logo src={logo} alt="Scan2Play logo" />
-      </Grid>
-      <Grid item>
-        <Button color="primary">
-          <Styled.Start>Press Start</Styled.Start>
-        </Button>
-      </Grid>
-    </Styled.Wrapper>
-  )
-}
+const Home = ({ history }) => (
+  <Styled.GridWrapper
+    container 
+    direction="column"
+    justify="center"
+    alignItems="center"
+    onClick={() => history.push('/scan')}
+  >
+    <Grid item>
+      <Styled.Logo src={logo} alt="Scan2Play logo" />
+    </Grid>
+    <Grid item>
+      <Button color="primary">
+        <Styled.Start>Press Start</Styled.Start>
+      </Button>
+    </Grid>
+  </Styled.GridWrapper>
+)
 
 export default withRouter(Home)
