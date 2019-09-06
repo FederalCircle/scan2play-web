@@ -3,20 +3,14 @@ import styled from 'styled-components'
 // MUI
 import Grid from '@material-ui/core/Grid'
 // Others
-import * as qrCodeScanner from '../lib/qrCodeScanner'
+import QrCodeScanner from '../lib/QrCodeScanner'
 // Assets
 import overlayPath from '../assets/overlay.svg'
 
 const Styled = {}
-Styled.VideoContainer = styled(Grid)`
+Styled.GridWrapper = styled(Grid)`
   overflow: hidden;
   position: relative;
-`
-
-Styled.Overlay = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
 `
 
 Styled.Overlay = styled.div`
@@ -30,13 +24,18 @@ Styled.Overlay = styled.div`
 
 const Scan = () => {
   React.useEffect(() => {
-    qrCodeScanner.init('#video')
+    const scanner = new QrCodeScanner()
+    scanner.init('#qrCanvas')
   }, [])
   return (
-    <Styled.VideoContainer container justify="center">
-      <video id="video" autoPlay playsInline />
+    <Styled.GridWrapper
+      container
+      justify="center"
+      alignItems="center"
+    >
+      <canvas id="qrCanvas" />
       <Styled.Overlay data-src={overlayPath} />
-    </Styled.VideoContainer>
+    </Styled.GridWrapper>
   )
 }
 
