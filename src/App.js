@@ -8,6 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Grid from '@material-ui/core/Grid'
 // Custom components
 import Scan from './pages/Scan'
+import Test from './pages/Test'
 import Home from './pages/Home'
 // Constants
 import * as colors from './constants/colors'
@@ -35,12 +36,13 @@ function App() {
     <Router>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Styled.Wrapper container>
           <Switch>
-            <Route path="/scan" component={Scan} />
-            <Route path="/" component={Home} />
+            <Route path="/test" component={Test} />
+            <Styled.Wrapper container>
+                <Route path="/scan" component={Scan} />
+                <Route path="/" component={Home} />
+            </Styled.Wrapper>
           </Switch>
-        </Styled.Wrapper>
       </ThemeProvider>
     </Router>
   )
