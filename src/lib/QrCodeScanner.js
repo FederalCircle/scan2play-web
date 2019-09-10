@@ -1,14 +1,36 @@
 import JsQR from 'jsqr'
 
 /**
+ * Scanner used to render user media devices on a canvas element and find
+ * QR Codes in the video stream.
  * @see https://github.com/cozmo/jsQR/blob/master/docs/index.html
  */
 class QrCodeScanner {
+  /**
+   * Canvas DOM element to render video frames
+   * @type {DOMElement}
+   */
   canvas = null
 
+  /**
+   * Video element created to stream user media device
+   * @type {DOMElement}
+   */
   video = null
 
-  constructor(canvasSelector = 'canvas') {
+  /**
+   * Callback function for QR Code match
+   * @type {Function}
+   */
+  onSuccess = () => {}
+
+  /**
+   * @param {string} canvasSelector - String used to find canvas DOM reference
+   * @param {Function} onSuccess - Callback function for QR Code match
+   */
+  constructor(canvasSelector = 'canvas', onSuccess) {
+    this.onSuccess = onSuccess
+
     // Get the canvas DOM reference
     this.canvas = document.querySelector(canvasSelector)
 
@@ -17,6 +39,10 @@ class QrCodeScanner {
     this.video.setAttribute('playsinline', true)
   }
 
+  /**
+   * Start the video stream rendered in a canvas element, as well as QR Code
+   * pattern search.
+   */
   async init() {
     // Get webcam stream
     const stream = await this.requestUserMedia()
@@ -41,9 +67,14 @@ class QrCodeScanner {
       stream = await navigator
         .mediaDevices
         .getUserMedia(mediaConstraints)
-      console.log('userMediaStream', stream)
     } catch (err) {
       console.error(new Error(err))
+      switch (err.name) {
+        case 'NotAllowedError': 
+          return alert('We need access to your device camera')
+        default:
+          return alert('Something wrong happened :(')
+      }
     }
 
     return stream
@@ -56,8 +87,8 @@ class QrCodeScanner {
         videoHeight: height,
       } = this.video
 
-      this.canvas.height = height
-      this.canvas.width = width
+      if (this.canvas.height) this.canvas.height = height
+      if (this.canvas.width) this.canvas.width = width
 
       const ctx = this.canvas.getContext("2d")
 
@@ -70,9 +101,8 @@ class QrCodeScanner {
         inversionAttempts: "dontInvert",
       })
 
-      console.log('qrCode', code)
       if (code) {
-        alert(code.data)
+        this.onSuccess(code.data)
       }
     }
     requestAnimationFrame(this.tick.bind(this))

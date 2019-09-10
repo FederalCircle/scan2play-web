@@ -23,10 +23,15 @@ Styled.Overlay = styled.div`
 `
 
 const Scan = () => {
+  const handleScannerSuccess = (code) => {
+    console.log('QR Code: ', code)
+  }
+
   React.useEffect(() => {
-    const scanner = new QrCodeScanner()
-    scanner.init('#qrCanvas')
+    const scanner = new QrCodeScanner('#qrCanvas', handleScannerSuccess)
+    scanner.init()
   }, [])
+  
   return (
     <Styled.GridWrapper
       container
