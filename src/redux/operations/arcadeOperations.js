@@ -1,17 +1,16 @@
 import { arcadeActions } from '../actions'
-import { arcadeRef } from '../../lib/firebase'
+import { arcadesRef } from '../../lib/firebase'
 
-export const pushTest = () => (dispatch) => {
-  arcadeRef.set({
-    serverTimestamp: Date.now(),
-    clientTimestamp: Date.now()
-  })
+export const insertCoin = () => (dispatch) => {
+  arcadesRef
+    .child('clientTimestamp')
+    .set(Date.now())
 }
 
 /**
  * Connects the redux store with the firebase reference. A listener will
  * dispatch a sync action on each firebase update.
- * 
+ *
  * @returns {Function} Disconnect function used to remove firebase liestener.
  */
 export const connectArcade = () => (dispatch) => {
@@ -22,9 +21,9 @@ export const connectArcade = () => (dispatch) => {
     )
   }
 
-  arcadeRef.on('value', callback)
+  arcadesRef.on('value', callback)
 
   return {
-    disconnect: () => arcadeRef.off('value', callback)
+    disconnect: () => arcadesRef.off('value', callback)
   }
 }

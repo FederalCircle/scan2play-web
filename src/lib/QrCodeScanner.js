@@ -1,4 +1,5 @@
 import JsQR from 'jsqr'
+import throttle from 'lodash.throttle'
 
 /**
  * Scanner used to render user media devices on a canvas element and find
@@ -19,6 +20,15 @@ class QrCodeScanner {
   video = null
 
   /**
+   * Config object used across methods
+   * @type {Object}
+   * @prop {number} successThrottle - Time to throttle success callback
+   */
+  config = {
+    successThrottle: 300,
+  }
+
+  /**
    * Callback function for QR Code match
    * @type {Function}
    */
@@ -26,10 +36,20 @@ class QrCodeScanner {
 
   /**
    * @param {string} canvasSelector - String used to find canvas DOM reference
-   * @param {Function} onSuccess - Callback function for QR Code match
+   * @param {Function} onSuccess - Callback function for QR Code match. The
+   * function will be throttled.
+   * @param {Object} [customConfig] - Object used to overwrite default config
    */
-  constructor(canvasSelector = 'canvas', onSuccess) {
-    this.onSuccess = onSuccess
+  constructor(canvasSelector = 'canvas', onSuccess, customConfig = {}) {
+    this.config = {
+      ...this.config,
+      ...customConfig,
+    }
+
+    this.onSuccess = throttle(
+      onSuccess,
+      this.config.successThrottle
+    )
 
     // Get the canvas DOM reference
     this.canvas = document.querySelector(canvasSelector)
@@ -43,7 +63,7 @@ class QrCodeScanner {
    * Start the video stream rendered in a canvas element, as well as QR Code
    * pattern search.
    */
-  async init() {
+  async start() {
     // Get webcam stream
     const stream = await this.requestUserMedia()
 
@@ -70,7 +90,7 @@ class QrCodeScanner {
     } catch (err) {
       console.error(new Error(err))
       switch (err.name) {
-        case 'NotAllowedError': 
+        case 'NotAllowedError':
           return alert('We need access to your device camera')
         default:
           return alert('Something wrong happened :(')
@@ -81,6 +101,7 @@ class QrCodeScanner {
   }
 
   tick() {
+    if (!this.video) return
     if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
       const {
         videoWidth: width,
@@ -95,7 +116,7 @@ class QrCodeScanner {
       // Get a video frame as an ImageData object
       ctx.drawImage(this.video, 0, 0, width, height)
       var imageData = ctx.getImageData(0, 0, width, height)
-  
+
       // Try to identify a QR Code in the video snapshot
       var code = JsQR(imageData.data, imageData.width, imageData.height, {
         inversionAttempts: "dontInvert",
@@ -106,6 +127,11 @@ class QrCodeScanner {
       }
     }
     requestAnimationFrame(this.tick.bind(this))
+  }
+
+  stop() {
+    this.video = null
+    this.canvas = null
   }
 }
 

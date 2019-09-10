@@ -36,13 +36,13 @@ function App() {
     <Router>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Styled.Wrapper container>
           <Switch>
-            <Route path="/test" component={Test} />
-            <Styled.Wrapper container>
-                <Route path="/scan" component={Scan} />
-                <Route path="/" component={Home} />
-            </Styled.Wrapper>
+              <Route path="/test" component={Test} />
+              <Route path="/scan" component={Scan} />
+              <Route path="/" component={Home} />
           </Switch>
+        </Styled.Wrapper>
       </ThemeProvider>
     </Router>
   )
