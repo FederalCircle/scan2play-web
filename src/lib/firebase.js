@@ -13,4 +13,5 @@ const config = {
 firebase.initializeApp(config)
 
 export const databaseRef = firebase.database().ref()
-export const arcadeRef = databaseRef.child('alphaArcade')
+export const rootRef = databaseRef.child('alpha')
+export const arcadesRef = rootRef.child('arcades')
