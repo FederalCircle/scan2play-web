@@ -1,6 +1,8 @@
+import { combineReducers } from 'redux'
+
 import { appTypes } from '../types'
 
-const appReducer = (state = 0, action) => {
+const countReducer = (state = 0, action) => {
   switch (action.type) {
     case appTypes.INCREMENT_COUNT:
       return state + 1
@@ -10,5 +12,9 @@ const appReducer = (state = 0, action) => {
       return state
   }
 }
+
+const appReducer = combineReducers({
+  count: countReducer,
+})
 
 export default appReducer
