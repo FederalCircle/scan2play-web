@@ -33,6 +33,7 @@ const Scan = ({ history, operations }) => {
     console.log('handleScannerSuccess', code)
     operations.insertCoin()
     history.push('/')
+    alert('Sua ficha foi inserida, divirta-se! =D')
   }
 
   React.useEffect(() => {
