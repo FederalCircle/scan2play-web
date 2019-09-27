@@ -27,13 +27,20 @@ Styled.Overlay = styled.div`
 `
 
 const Scan = ({ history, operations }) => {
-  const handleScannerSuccess = (code) => {
+  const handleScannerSuccess = async (code) => {
+    console.log('handleScannerSuccess', code)
+
     if (code !== 'Scan2Play') return
 
-    console.log('handleScannerSuccess', code)
-    operations.insertCoin()
-    history.push('/')
-    alert('Sua ficha foi inserida, divirta-se! =D')
+    try {
+      await operations.insertCoin()
+      history.push('/')
+      alert('Sua ficha foi inserida, divirta-se! =D')
+    } catch (err) {
+      if (err === 'NO_COINS') {
+        alert('Não há fichas suficientes =(')
+      }
+    }
   }
 
   React.useEffect(() => {

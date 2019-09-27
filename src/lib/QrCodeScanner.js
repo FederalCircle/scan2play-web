@@ -48,7 +48,8 @@ class QrCodeScanner {
 
     this.onSuccess = throttle(
       onSuccess,
-      this.config.successThrottle
+      this.config.successThrottle,
+      { trailing: false },
     )
 
     // Get the canvas DOM reference
